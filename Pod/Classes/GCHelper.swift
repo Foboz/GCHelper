@@ -68,7 +68,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     
     override init() {
         super.init()
-        NotificationCenter.default.addObserver(self, selector: #selector(GCHelper.authenticationChanged), name: NSNotification.Name(rawValue: GKPlayerAuthenticationDidChangeNotificationName), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GCHelper.authenticationChanged), name: NSNotification.Name.GKPlayerAuthenticationDidChangeNotificationName, object: nil)
     }
     
     // MARK: Private functions
@@ -111,7 +111,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     // MARK: User functions
     
     /// Authenticates the user with their Game Center account if possible
-    public func authenticateLocalUser(_ completion: ((view: UIViewController?) -> Void)? = nil) {
+    public func authenticateLocalUser(_ completion: ((_ view: UIViewController?) -> Void)? = nil) {
         print("Authenticating local user...")
         
         if GKLocalPlayer.localPlayer().isAuthenticated == false {
@@ -120,9 +120,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
                     print("Authentication error: \(String(describing: error?.localizedDescription))")
                     return
                 }
-                if (completion != nil) {
-                    completion(view)
-                }
+                completion?(view)
             }
         } else {
             print("Already authenticated")
