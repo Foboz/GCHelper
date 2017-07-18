@@ -74,7 +74,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     // MARK: Private functions
     
     @objc fileprivate func authenticationChanged() {
-        if GKLocalPlayer.localPlayer().isAuthenticated && !authenticated {
+        if GKLocalPlayer.localPlayer().isAuthenticated {
             authenticated = true
         } else {
             authenticated = false
@@ -111,7 +111,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
     // MARK: User functions
     
     /// Authenticates the user with their Game Center account if possible
-    public func authenticateLocalUser() {
+    public func authenticateLocalUser(_ completion: ((view: UIViewController?) -> Void)? = nil) {
         print("Authenticating local user...")
         
         if GKLocalPlayer.localPlayer().isAuthenticated == false {
@@ -120,8 +120,9 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
                     print("Authentication error: \(String(describing: error?.localizedDescription))")
                     return
                 }
-                
-                self.authenticated = true
+                if (completion != nil) {
+                    completion(view)
+                }
             }
         } else {
             print("Already authenticated")
